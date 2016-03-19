@@ -1,5 +1,3 @@
-print("BDI Server Loaded!")
-
 util.AddNetworkString( "BDI_SendToClient" )
 
 function BDI_ScalePlayerDamage(victim,hitgroup,dmginfo)
