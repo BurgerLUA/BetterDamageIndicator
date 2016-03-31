@@ -9,7 +9,7 @@ net.Receive("BDI_SendToClient", function()
 	local Position = net.ReadVector()
 	local Damage = net.ReadFloat()
 	
-	StoredHitInformation[CurTime() + 2] = {Position = Position, Damage = Damage}
+	StoredHitInformation[CurTime() + 1] = {Position = Position, Damage = Damage}
 
 end)
 
