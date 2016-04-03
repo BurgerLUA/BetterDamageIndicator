@@ -76,53 +76,62 @@ function BDI_HUDPaint()
 	local x = ScrW()
 	local y = ScrH()
 	
-	for k,v in pairs(StoredHitInformation) do
+	if ply:Alive() then
 	
-		if k <= (CurTime() - 2) then
+		for k,v in pairs(StoredHitInformation) do
 		
-			table.remove(StoredHitInformation,k)
+			if k <= (CurTime() - 2) then
 			
-		else
-			
-			local ScreenTable = v.Position:ToScreen()
-			
-			local PosX = ScreenTable.x
-			local PosY = ScreenTable.y
-			local IsVisible = ScreenTable.visible
-			
-			local DistanceX = math.abs(x*0.5 - PosX)
-			local DistanceY = math.abs(y*0.5 - PosY)
-			local Distance = Vector(DistanceX,DistanceY,0):Length()
-
-			local Ang = (Vector(x/2,y/2) - Vector(ScreenTable.x,ScreenTable.y) ):Angle()
-			
-			--local Alpha = math.Clamp(Distance*0.5,0,255)
-			local Alpha =  math.Clamp( (1 - (CurTime() - k))*255 , 0 , 255 )
-			
-			surface.SetDrawColor( Color(255,0,0,Alpha) )
-
-			if Distance >= 1000 then
-				if PosX > x/2 then
-					surface.SetMaterial(GradR)
-					surface.DrawPoly( Shape02 ) -- right
-				elseif PosX < x/2 then
-					surface.SetMaterial(GradR)
-					surface.DrawPoly( Shape04 ) -- left
-				end	
-			end
-			
-			if IsVisible then
-				surface.SetMaterial(GradU)
-				surface.DrawPoly( Shape01 )
+				table.remove(StoredHitInformation,k)
+				
 			else
-				surface.SetMaterial(GradU)
-				surface.DrawPoly( Shape03 )
-			end
-			
-		end
+				
+				local ScreenTable = v.Position:ToScreen()
+				
+				local PosX = ScreenTable.x
+				local PosY = ScreenTable.y
+				local IsVisible = ScreenTable.visible
+				
+				local DistanceX = math.abs(x*0.5 - PosX)
+				local DistanceY = math.abs(y*0.5 - PosY)
+				local Distance = Vector(DistanceX,DistanceY,0):Length()
 
+				local Ang = (Vector(x/2,y/2) - Vector(ScreenTable.x,ScreenTable.y) ):Angle()
+				
+				--local Alpha = math.Clamp(Distance*0.5,0,255)
+				local Alpha =  math.Clamp( (1 - (CurTime() - k))*255 , 0 , 255 )
+				
+				surface.SetDrawColor( Color(255,0,0,Alpha) )
+
+				if Distance >= 1000 then
+					if PosX > x/2 then
+						surface.SetMaterial(GradR)
+						surface.DrawPoly( Shape02 ) -- right
+					elseif PosX < x/2 then
+						surface.SetMaterial(GradR)
+						surface.DrawPoly( Shape04 ) -- left
+					end	
+				end
+				
+				if IsVisible then
+					surface.SetMaterial(GradU)
+					surface.DrawPoly( Shape01 )
+				else
+					surface.SetMaterial(GradU)
+					surface.DrawPoly( Shape03 )
+				end
+				
+			end
+
+		end
+		
+	else
+		
+		surface.SetDrawColor(Color(0,0,0,255))
+		surface.DrawRect( 0, 0, x, y )
+	--	ply:SetDSP(35,true)
 	end
 
 end
 
-hook.Add("HUDPaint","BDI: HUDPaint",BDI_HUDPaint)
+hook.Add("HUDPaintBackground","BDI: HUDPaint",BDI_HUDPaint)
