@@ -6,10 +6,12 @@ StoredHitInformation[CurTime()] = {Position = Vector(0,0,0),Damage = 100}
 
 net.Receive("BDI_SendToClient", function()
 
-	local Position = net.ReadVector()
-	local Damage = net.ReadFloat()
+	local Position = net.ReadVector() or Vector(0,0,0)
+	local Damage = net.ReadFloat() or 1
 	
-	StoredHitInformation[CurTime() + 1] = {Position = Position, Damage = Damage}
+	local LingerDamage = math.min(Damage,100) / 100
+	
+	StoredHitInformation[CurTime() + 1 + LingerDamage] = {Position = Position, Damage = Damage}
 
 end)
 
@@ -124,12 +126,7 @@ function BDI_HUDPaint()
 			end
 
 		end
-		
-	else
-		
-		surface.SetDrawColor(Color(0,0,0,255))
-		surface.DrawRect( 0, 0, x, y )
-	--	ply:SetDSP(35,true)
+
 	end
 
 end
