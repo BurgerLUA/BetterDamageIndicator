@@ -1,5 +1,3 @@
-print("BDI Client Loaded!")
-
 local StoredHitInformation = {}
 
 StoredHitInformation[CurTime()] = {Position = Vector(0,0,0),Damage = 100}
